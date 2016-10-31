@@ -6,7 +6,7 @@
 ZBX_DATA=/tmp/zabbix-sender-yum.data
 HOSTNAME=$(egrep ^Hostname= /etc/zabbix/zabbix_agentd.conf | cut -d = -f 2)
 ZBX_SERVER_IP=$(egrep ^ServerActive /etc/zabbix/zabbix_agentd.conf | cut -d = -f 2)
-RELEASE=$(cat "/etc/redhat-release")
+RELEASE=$(cat "/etc/issue")
 ENFORCING=$(getenforce)
 
 ### Check if Zabbix-Sender is Installed ###
@@ -25,22 +25,13 @@ fi
 
 
 ### Check for Security Updates ###
-if   grep -q -i "release 6" /etc/redhat-release ; then
-  MODERATE2=$(yum updateinfo list --sec-severity=Moderate | grep Moderate | wc -l)
-  IMPORTANT2=$(yum updateinfo list --sec-severity=Important | grep Important | wc -l)
-  LOW2=$(yum updateinfo list --sec-severity=Low | grep Low | wc -l)
-  CRITICAL2=$(yum updateinfo list --sec-severity=Critical | grep Critical | wc -l)
-  MODERATE=$((MODERATE2 - 1))
-  IMPORTANT=$((IMPORTANT2 - 1))
-  LOW=$((LOW2 - 1))
-  CRITICAL=$((CRITICAL2 - 1))
-elif grep -q -i "release 7" /etc/redhat-release ; then
-  MODERATE=$(yum updateinfo list --sec-severity=Moderate | grep Moderate | wc -l)
-  IMPORTANT=$(yum updateinfo list --sec-severity=Important | grep Important | wc -l)
-  LOW=$(yum updateinfo list --sec-severity=Low | grep Low | wc -l)
-  CRITICAL=$(yum updateinfo list --sec-severity=Critical | grep Critical | wc -l)
+if grep -q -i "release 7" /etc/redhat-release ; then
+  MODERATE=$(yum updateinfo list --sec-severity=medium | grep medium | wc -l)
+  IMPORTANT=$(yum updateinfo list --sec-severity=important | grep important | wc -l)
+  LOW=$(yum updateinfo list --sec-severity=low | grep low | wc -l)
+  CRITICAL=$(yum updateinfo list --sec-severity=critical | grep critical | wc -l)
 else
-  echo "Running neither RHEL6.x nor RHEL 7.x !"
+  echo "Running unsupported OS"
 fi
 
 
