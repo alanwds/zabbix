@@ -25,7 +25,7 @@ fi
 
 
 ### Check for Security Updates ###
-if grep -q -i "release 7" /etc/redhat-release ; then
+if grep -q -i "Amazon Linux" /etc/issue ; then
   MODERATE=$(yum updateinfo list --sec-severity=medium | grep medium | wc -l)
   IMPORTANT=$(yum updateinfo list --sec-severity=important | grep important | wc -l)
   LOW=$(yum updateinfo list --sec-severity=low | grep low | wc -l)
