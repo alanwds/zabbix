@@ -1,4 +1,4 @@
-Zabbix Scripts
+Zabbix Script to check yum security updates
 ==============
 
 Check Yum Updates
